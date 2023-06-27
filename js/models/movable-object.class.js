@@ -8,6 +8,21 @@ class MovableObject {
   currentImage = 0;
   speed = 0.35;
   otherDirection = false;
+  speedY = 0;
+  acceleration = 2;
+
+  applyGravity() {
+    setInterval(() => {
+      if (this.isAboveGround()){
+      this.y -= this.speedY;
+      this.speedY -= this.acceleration;
+    }
+    }, 1000 / 25);
+  }
+
+  isAboveGround() {
+    return this.y  < 100;
+  }
 
   // loadImage('img/PfadDesBildes.png')
   loadImage(path) {
