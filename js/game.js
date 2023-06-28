@@ -22,7 +22,7 @@ window.addEventListener("keydown", (e) => {
   if (e.keyCode == 40) {
     keyboard.DOWN = true;
   }
-  if (e.keyCode == 32) {
+  if (e.keyCode == 32) {  
     keyboard.SPACE = true;
   }
 });
