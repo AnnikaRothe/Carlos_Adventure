@@ -1,11 +1,5 @@
-class MovableObject {
-  x = 120;
-  y = 200;
-  img;
-  height = 250;
-  width = 130;
-  imageCache = {};
-  currentImage = 0;
+class MovableObject extends DrawableObject {
+ 
   speed = 0.35;
   otherDirection = false;
   speedY = 0;
@@ -26,25 +20,6 @@ class MovableObject {
     return this.y < 100;
   }
 
-  // loadImage('img/PfadDesBildes.png')
-  loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
-
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
-
-  drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken) {
-      ctx.beginPath();
-      ctx.lineWidth = "7";
-      ctx.strokeStyle = "green";
-      ctx.rect(this.x, this.y, this.width, this.height);
-      ctx.stroke();
-    }
-  }
 
   isColliding(mo) {
     return (
@@ -74,17 +49,6 @@ class MovableObject {
     return this.energy == 0;
   }
 
-  /**
-   *
-   * @param {Array} arr - ['img/image1.png, img/image2.png,....]
-   */
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
-  }
 
   playAnimation(images) {
     let i = this.currentImage % images.length; //let i = 0 % 6 (Modulu % ist der mathematische Rest)
