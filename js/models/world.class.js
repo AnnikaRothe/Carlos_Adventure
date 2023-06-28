@@ -6,6 +6,7 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
+  throwableObjects = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -13,38 +14,54 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.checkCollisions();
+    this.run();
   }
-
 
   setWorld() {
     this.character.world = this;
   }
 
-
-  checkCollisions() {
+  run() {
     setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)){
-          this.character.hit();
-          console.log('Collision with character, energy', this.character.energy)
-        };
-      });
+      this.checkCollisions();
+      this.checkThrowedObjects();
     }, 200);
   }
 
+  checkThrowedObjects() {
+    if(this.keyboard.SPACE) {
+      let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+      this.throwableObjects.push(bottle);
+    }
+  }
+
+
+
+  checkCollisions() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+      }
+    });
+  }
 
   //draw wird immer wieder aufgerufen
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
-
     this.addObjectsToMap(this.level.backgroundObjects);
+
+    this.ctx.translate(-this.camera_x, 0); //back
+    // space for fixed objects (statusleiste z.b)
     this.addToMap(this.statusBar);
+    this.ctx.translate(this.camera_x, 0); // forwards
+
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -71,7 +88,7 @@ class World {
     mo.drawFrame(this.ctx);
 
     if (mo.otherDirection) {
-     this.flipImageBack(mo);
+      this.flipImageBack(mo);
     }
   }
 
@@ -82,10 +99,8 @@ class World {
     mo.x = mo.x * -1;
   }
 
-
-  flipImageBack (mo) {
+  flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
-
 }
