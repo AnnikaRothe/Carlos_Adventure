@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 html {
   height: 100%;
 }
@@ -420,4 +421,16 @@ h1 {
   canvas {
     height: 85vh;
   }
+=======
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas {
+    margin-top: 100px;
+    background-color: darkgreen;
+    border-radius: 20px;
+>>>>>>> 071831fbdc46e2a5c43bf91f1588f25d30f87c81
 }
